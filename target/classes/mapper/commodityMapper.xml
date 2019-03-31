@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "mybatis-3-mapper" "mybatis-3-mapper.dtd" >
+<mapper namespace="mapper.CommodityMapper">
+	<resultMap type="Commodity" id="baseResultMap">
+		<id column="c_id" property="id"/>
+		<result column="c_title" property="title"/>
+		<result column="c_introduce" property="introduce"/>
+		<result column="c_type" property="type"/>
+		<result column="c_imgPath" property="imgPath"/>
+	</resultMap>
+	<!-- 插入标签 -->
+	<insert id="addCommodity" parameterType="Commodity">
+		insert into commodity(c_id,c_title,c_introduce,c_type,c_imgPath)
+		values(#{id},#{title},#{introduce},#{type},#{imgPath})
+	</insert>
+	<!-- 删除标签 -->
+	<delete id="deleteCommodity" parameterType="String">
+		delete from commodity where c_id=#{id}
+	</delete>
+	<!-- 更新标签 -->
+	<update id="updateCommodity">
+		update commodity
+		set c_id=#{newCommodity.id},
+			c_title=#{newCommodity.title},
+			c_introduce=#{newCommodity.introduce},
+			c_type=#{newCommodity.type},
+			c_imgPath=#{newCommodity.imgPath}
+		where c_Id=#{oldId}
+	</update>
+	<!-- 查询标签 -->
+	<select id="queryAll" resultMap="baseResultMap">
+		select * from commodity
+	</select>
+	<select id="queryCommodityByTitle" parameterType="String" resultMap="baseResultMap">
+		select * from commodity where c_title=#{title}
+	</select>
+	<select id="queryCommodityByType" parameterType="String" resultMap="baseResultMap">
+		select * from commodity where c_type=#{type}
+	</select>
+	<select id="isExistCommodityById" parameterType="String" resultType="boolean">
+		select count(*) from commodity where c_id=#{id}
+	</select>
+</mapper>
