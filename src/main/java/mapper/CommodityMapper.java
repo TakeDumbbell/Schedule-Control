@@ -11,9 +11,11 @@ import domain.Commodity;
 public interface CommodityMapper {
 	int addCommodity(Commodity commodity);
 	int deleteCommodity(String id);
-	int updateCommodity(@Param("oldId")String oldId,@Param("newCommodity")Commodity newCommodity);
+	int updateCommodity(@Param("newCommodity")Commodity newCommodity);
+	Commodity queryById(String id);
 	List<Commodity> queryCommodityByTitle(String title);
 	List<Commodity> queryCommodityByType(String type);
 	List<Commodity> queryAll();
+	List<Commodity> queryCommodityByTypeTitleTypeId(@Param("title")String title,@Param("type")String type,@Param("typeId")String typeId);
 	boolean isExistCommodityById(String id);
 }

@@ -3,15 +3,20 @@
 <mapper namespace="mapper.CommodityMapper">
 	<resultMap type="Commodity" id="baseResultMap">
 		<id column="c_id" property="id"/>
+		<result column="c_brandImg" property="brandImg"/>
+		<result column="c_brand" property="brand"/>
 		<result column="c_title" property="title"/>
-		<result column="c_introduce" property="introduce"/>
+		<result column="c_size" property="size"/>
 		<result column="c_type" property="type"/>
+		<result column="c_typeId" property="typeId"/>
+		<result column="c_price" property="price"/>
+		<result column="c_nowPrice" property="nowPrice"/>
 		<result column="c_imgPath" property="imgPath"/>
 	</resultMap>
 	<!-- 插入标签 -->
 	<insert id="addCommodity" parameterType="Commodity">
-		insert into commodity(c_id,c_title,c_introduce,c_type,c_imgPath)
-		values(#{id},#{title},#{introduce},#{type},#{imgPath})
+		insert into commodity(c_brandImg,c_brand,c_title,c_size,c_type,c_typeId,c_price,c_nowPrice,c_imgPath)
+		values(#{brandImg},#{brand},#{title},#{size},#{type},#{typeId},#{price},#{nowPrice},#{imgPath})
 	</insert>
 	<!-- 删除标签 -->
 	<delete id="deleteCommodity" parameterType="String">
@@ -20,22 +25,35 @@
 	<!-- 更新标签 -->
 	<update id="updateCommodity">
 		update commodity
-		set c_id=#{newCommodity.id},
+		set c_brandImg=#{newCommodity.brandImg},
+			c_brand=#{newCommodity.brand},
 			c_title=#{newCommodity.title},
-			c_introduce=#{newCommodity.introduce},
+			c_size=#{newCommodity.size},
 			c_type=#{newCommodity.type},
+			c_typeId=#{newCommodity.typeId},
+			c_price=#{newCommodity.price},
+			c_nowPrice=#{newCommodity.nowPrice},
 			c_imgPath=#{newCommodity.imgPath}
-		where c_Id=#{oldId}
+		where c_id=#{newCommodity.id}
 	</update>
 	<!-- 查询标签 -->
 	<select id="queryAll" resultMap="baseResultMap">
 		select * from commodity
 	</select>
 	<select id="queryCommodityByTitle" parameterType="String" resultMap="baseResultMap">
-		select * from commodity where c_title=#{title}
+		select * from commodity where c_title like #{title}
 	</select>
 	<select id="queryCommodityByType" parameterType="String" resultMap="baseResultMap">
 		select * from commodity where c_type=#{type}
+	</select>
+	<select id="queryCommodityByTypeTitleTypeId" resultMap="baseResultMap">
+		select * from commodity 
+		where c_title like #{title} and c_type like #{type} and 
+				c_typeId like #{typeId}
+	</select>
+	<select id="queryById" resultMap="baseResultMap">
+		select * from commodity 
+		where c_id like #{id}
 	</select>
 	<select id="isExistCommodityById" parameterType="String" resultType="boolean">
 		select count(*) from commodity where c_id=#{id}
