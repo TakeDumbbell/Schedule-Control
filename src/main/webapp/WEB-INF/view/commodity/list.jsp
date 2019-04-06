@@ -7,7 +7,7 @@
 						+ ":" + request.getServerPort() + path + "/";
 %>
 <%
-	request.getAttribute("commodityList");
+//	request.getAttribute("commodityList");
 %>
 <!DOCTYPE html>
 <html>
@@ -125,7 +125,19 @@
 		        }
 		    });
 		}
-		
+		function static_num(){            
+		    document.getElementById("btnOperate").onclick = function () {                
+		        var arr = new Array();                
+		        var items = document.getElementsByName("category");                 
+		        for (i = 0; i < items.length; i++) {                    
+		            if (items[i].checked) {                        
+		                arr.push(items[i].value);   
+		            }                
+		        }
+		        window.location.href = 'commodity/querySelected';
+		        alert("选择的个数为：" + arr.length);            
+		    };        
+		}
 	</script>
 </head>
 <body>
@@ -154,53 +166,58 @@
 		</div>
 	</div>
 	<br><br>
-	<c:forEach items="${commodityList}" var="commodity">
-		<div id="main">
-			<div id="left">
-				<img src="/uploadfile/brandImg/${commodity.brandImg}" width="50" height="50">&nbsp;
-		<!--  		<img src="E:/java/java_project/brandImg/${commodity.brandImg}" width="50" height="50">&nbsp;
-				-->
-				<strong style="margin-top:0px;font-size:30px">${commodity.brand }</strong>
-				<input type="button" value="删除" class="ui_input_btn01" onclick="javascript:del('${commodity.id}')"/> 
-				<!--  
-				<a href="commodity/updateForm?id=${commodity.id}&brandImg=${commodity.brandImg}&brand=${commodity.brand}&title=${commodity.title}&size=${commodity.size}&price=${commodity.price}&typeId=${commodity.typeId}&type=${commodity.type}&nowPrice=${commodity.nowPrice}" class="edit">
-					<button>修改</button>
-				</a>
-				-->
-				<a href="commodity/queryById?id=${commodity.id}" class="edit">
-					<button>修改</button>
-				</a>
-			</div>
-			<div id="right">
-				<p>${commodity.title }</p>
-				<p>尺码&nbsp;${commodity.size }</p>
-				<p>款式 ${commodity.type }</p>
-				<p>款号 ${commodity.typeId }</p>
-				<div>
-					售价&nbsp;<strong style="color:red;font-size:20px;">￥${commodity.nowPrice }</strong>
-					<del>￥${commodity.price }</del>
+	<form action="htmlpage/checkboxname" method="post">
+		<c:forEach items="${commodityList}" var="commodity">
+			<div id="main">
+				<div id="left">
+					<input type="checkbox" name="category" value="${commodity.id}" />
+					<img src="/uploadfile/brandImg/${commodity.brandImg}" width="50" height="50">&nbsp;
+			<!--  		<img src="E:/java/java_project/brandImg/${commodity.brandImg}" width="50" height="50">&nbsp;
+					-->
+					<strong style="margin-top:0px;font-size:30px">${commodity.brand }</strong>
+					<input type="button" value="删除" class="ui_input_btn01" onclick="javascript:del('${commodity.id}')"/> 
+					<!--  
+					<a href="commodity/updateForm?id=${commodity.id}&brandImg=${commodity.brandImg}&brand=${commodity.brand}&title=${commodity.title}&size=${commodity.size}&price=${commodity.price}&typeId=${commodity.typeId}&type=${commodity.type}&nowPrice=${commodity.nowPrice}" class="edit">
+						<button>修改</button>
+					</a>
+					-->
+					<a href="commodity/queryById?id=${commodity.id}" class="edit">
+						<button>修改</button>
+					</a>
 				</div>
-				<div>
-					<script type="text/javascript">
-						var imgPath="${commodity.imgPath}";
-						var paths=imgPath.split(";");
-						for(var i=0;i<paths.length;i++){
-							var number=paths[i].split(".");
-							var n2="a"+number[0]+"a";
-							var imgsrc="<a href='/uploadfile/images/"+paths[i]+"' target='_blank'><img src='/uploadfile/images/" + paths[i] + "' width='200' height='200'></a>";
-							document.write(imgsrc);
-							if(i%2==1)
-								document.write("<br>");
-						}
-					</script>
-					<br>
-					<div class="border"><img id="aaa" src="resources/images/border.gif" alt="分割线" onclick="resize('aaa')"></div>
-					<br>
+				<div id="right">
+					<p>${commodity.title }</p>
+					<p>尺码&nbsp;${commodity.size }</p>
+					<p>款式 ${commodity.type }</p>
+					<p>款号 ${commodity.typeId }</p>
+					<div>
+						售价&nbsp;<strong style="color:red;font-size:20px;">￥${commodity.nowPrice }</strong>
+						<del>￥${commodity.price }</del>
+					</div>
+					<div>
+						<script type="text/javascript">
+							var imgPath="${commodity.imgPath}";
+							var paths=imgPath.split(";");
+							for(var i=0;i<paths.length;i++){
+								var number=paths[i].split(".");
+								var n2="a"+number[0]+"a";
+								var imgsrc="<a href='/uploadfile/images/"+paths[i]+"' target='_blank'><img src='/uploadfile/images/" + paths[i] + "' width='200' height='200'></a>";
+								document.write(imgsrc);
+								if(i%2==1)
+									document.write("<br>");
+							}
+						</script>
+						<br>
+						<div class="border"><img id="aaa" src="/uploadfile/images/border.gif" alt="分割线" onclick="resize('aaa')"></div>
+						<br>
+					</div>
 				</div>
-				<br>
 			</div>
-		</div>
-		<br>
-	</c:forEach>
+			<br>
+		</c:forEach>
+		<input type="submit" value="提交">
+	</form>
+	<br>
+	<input id="btnOperate" type="button" value="选择" onclick="javascript:static_num()" />
 </body>
 </html>

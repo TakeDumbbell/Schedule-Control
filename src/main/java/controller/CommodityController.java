@@ -1,5 +1,7 @@
 package controller;
 
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -13,13 +15,17 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
 import domain.Commodity;
+import domain.HtmlPage;
 import service.CommodityService;
+import service.HtmlPageService;
 
 @Controller
 @RequestMapping("/commodity")
 public class CommodityController {
 	@Autowired
 	private CommodityService commodityService;
+	@Autowired
+	private HtmlPageService htmlPageService;
 	@RequestMapping("/{path}")
 	public String jump(@PathVariable("path")String path) {
 		return "commodity/"+path;
@@ -38,9 +44,6 @@ public class CommodityController {
 	@RequestMapping("/queryAll")
 	public String queryAll(Model model) {
 		List<Commodity> commodityList = commodityService.queryAll();
-//		for(Commodity commodity:commodityList) {
-//			System.out.println(commodity.getBrand());
-//		}
 		model.addAttribute("commodityList",commodityList);
 		return "commodity/list";
 	}
@@ -81,5 +84,38 @@ public class CommodityController {
 		Commodity commodity=commodityService.queryById(id);
 		model.addAttribute("commodity",commodity);
 		return "commodity/updateForm";
+	}
+	
+	@RequestMapping("/checkboxname")
+	public String checkboxname(HttpServletRequest request,Model model) {
+		String[] checkbox=request.getParameterValues("category");
+		String content="";
+		for(int i=0;i<checkbox.length;i++) {
+			if(i>0)
+				content+=";";
+			content=content+checkbox[i];
+		}
+//		HtmlPage htmlPage=new HtmlPage("",content,"",new Date());
+//		htmlPage.setHostName("");
+		List<Commodity> commodityList = commodityService.queryAll();
+		model.addAttribute("commodityList",commodityList);
+		return "commodity/list";
+	}
+	@RequestMapping("/share")
+	public String shareCommodity(HttpServletRequest request,Model model) {
+		String htmlName=request.getParameter("p");
+		String hostName=request.getParameter("h");
+		HtmlPage htmlPage=htmlPageService.queryByHtmlAndHost(htmlName, hostName);
+		List<Commodity> commodityList = new ArrayList<Commodity>();
+		if(htmlName!=null&&!"".equals(htmlName)&&hostName!=null&&!"".equals(hostName)) {
+			String[] contents=htmlPage.getContent().split(";");
+			for(int i=0;i<contents.length;i++) {
+				Commodity commodity=commodityService.queryById(contents[i]);
+				if(commodity!=null)
+					commodityList.add(commodity);
+			}
+		}
+		model.addAttribute("commodityList",commodityList);
+		return "commodity/modelList";
 	}
 }

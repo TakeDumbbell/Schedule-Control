@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "mybatis-3-mapper" "mybatis-3-mapper.dtd" >
+<mapper namespace="mapper.HtmlPageMapper">
+	<resultMap type="HtmlPage" id="baseResultMap">
+		<id column="h_htmlName" property="htmlName"/>
+		<id column="h_hostName" property="hostName"/>
+		<result column="h_content" property="content"/>
+		<result column="h_createTime" property="createTime"/>
+	</resultMap>
+	<!-- 插入标签 -->
+	<insert id="addHtmlPage" parameterType="HtmlPage">
+		insert into htmlpage(h_htmlName,h_hostName,h_content,h_createTime)
+		values(#{htmlName},#{hostName},#{content},#{createTime})
+	</insert>
+	<!-- 删除标签 -->
+	<delete id="deleteHtmlPage">
+		delete from htmlpage where h_htmlName=#{htmlName} and h_hostName=#{hostName}
+	</delete>
+	<!-- 更新标签 -->
+	<update id="updateHtmlPageByName">
+		update htmlpage
+		set h_htmlName=#{newName},
+		where h_htmlName=#{oldName} and h_hostName=#{hostName}
+	</update>
+	<!-- 查询标签 -->
+	<select id="queryAll" resultMap="baseResultMap">
+		select * from htmlpage
+	</select>
+	<select id="queryByHtmlAndHost" resultMap="baseResultMap">
+		select * 
+		from htmlpage 
+		where h_htmlName=#{htmlName} and h_hostName=#{hostName}
+	</select>
+	<select id="queryByHost" parameterType="String" resultMap="baseResultMap">
+		select * from queryByHost where h_hostName like #{hostName}
+	</select>
+	<select id="queryByDate" parameterType="Date" resultMap="baseResultMap">
+		select * from commodity where h_createTime=#{createTime}
+	</select>
+	<select id="isExisthtmlByName" resultType="boolean">
+		select count(*) from commodity where h_htmlName=#{htmlName} and h_hostName=#{hostName}
+	</select>
+</mapper>

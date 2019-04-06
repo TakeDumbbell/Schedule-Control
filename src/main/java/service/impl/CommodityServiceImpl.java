@@ -23,11 +23,11 @@ public class CommodityServiceImpl implements CommodityService{
 	@Transactional(propagation = Propagation.REQUIRED,rollbackFor = {Exception.class})
 	public int addCommodity(Commodity commodity) {
 		String id=commodity.getId();
-		if(id!=null&&!"".equals(id)&&!commodityMapper.isExistCommodityById(id)) {
+	//	if(id!=null&&!"".equals(id)&&!commodityMapper.isExistCommodityById(id)) {
 			int i=commodityMapper.addCommodity(commodity);
 			return i;
-		}
-		return 0;
+	//	}
+	//	return 0;
 	}
 	@Override
 	@Transactional(propagation = Propagation.REQUIRED,rollbackFor = {Exception.class})
