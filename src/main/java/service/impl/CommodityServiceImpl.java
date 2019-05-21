@@ -69,13 +69,13 @@ public class CommodityServiceImpl implements CommodityService{
 					imgPath+=";";
 				}
 				if(perPath!=null) {
-					deletePict(Constants.IMG_PATH+paths[j]);
+					if(j<paths.length)
+						deletePict(Constants.IMG_PATH+paths[j]);
 					imgPath=imgPath+perPath;
 				} else if(j<paths.length){
 					imgPath=imgPath+paths[j];
 				}
 				j++;
-				
 			}
 			newCommodity.setImgPath(imgPath);
 		}

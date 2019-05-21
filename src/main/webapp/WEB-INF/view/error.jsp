@@ -9,10 +9,20 @@
 <html>
 <head>
 <base href = "<%=basePath%>">
-<meta charset="UTF-8">
-<title>Insert title here</title>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<link rel="stylesheet" href="resources/styles/public.css" />
+
+	<style type="text/css">
+
+		h1{
+			font-size: 60px;
+			color:blue;
+		}
+	</style>
 </head>
 <body>
-	操作失败！<a href="main"></a>
+	<h1>404</h1>
+	<p>对不起，没有这个页面</p>
 </body>
 </html>

@@ -9,8 +9,8 @@
 	</resultMap>
 	<!-- 插入标签 -->
 	<insert id="addHtmlPage" parameterType="HtmlPage">
-		insert into htmlpage(h_htmlName,h_hostName,h_content,h_createTime)
-		values(#{htmlName},#{hostName},#{content},#{createTime})
+		insert into htmlpage(h_hostName,h_content,h_createTime)
+		values(#{hostName},#{content},#{createTime})
 	</insert>
 	<!-- 删除标签 -->
 	<delete id="deleteHtmlPage">
@@ -19,8 +19,13 @@
 	<!-- 更新标签 -->
 	<update id="updateHtmlPageByName">
 		update htmlpage
-		set h_htmlName=#{newName},
+		set h_htmlName=#{newName}
 		where h_htmlName=#{oldName} and h_hostName=#{hostName}
+	</update>
+	<update id="updateContent">
+		update htmlpage
+		set h_content=#{content}
+		where h_htmlName=#{htmlName}
 	</update>
 	<!-- 查询标签 -->
 	<select id="queryAll" resultMap="baseResultMap">

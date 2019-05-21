@@ -1,18 +1,13 @@
 package service.impl;
 
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.PrintStream;
-import java.util.Date;
+import java.sql.Date;
 import java.util.List;
 
-import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import domain.Commodity;
 import domain.HtmlPage;
 import mapper.CommodityMapper;
 import mapper.HtmlPageMapper;
@@ -80,48 +75,50 @@ public class HtmlPageServiceImpl implements HtmlPageService{
 	@Override
 	@Transactional(propagation = Propagation.REQUIRED,rollbackFor = {Exception.class})
 	public int deleteHtmlPage(String htmlName, String hostName) {
-		
-		return 0;
+		return htmlPageMapper.deleteHtmlPage(htmlName, hostName);
 	}
 
 	@Override
 	@Transactional(propagation = Propagation.REQUIRED,rollbackFor = {Exception.class})
 	public int updateHtmlPageByName(String oldName, String newName) {
-		
 		return 0;
 	}
 
 	@Override
 	@Transactional(propagation = Propagation.REQUIRED,rollbackFor = {Exception.class})
 	public List<HtmlPage> queryAll() {
-		
-		return null;
+		return htmlPageMapper.queryAll();
 	}
 
 	@Override
 	@Transactional(propagation = Propagation.REQUIRED,rollbackFor = {Exception.class})
 	public List<HtmlPage> queryByHost(String hostName) {
-		
-		return null;
+		return htmlPageMapper.queryByHost(hostName);
 	}
 
 	@Override
 	@Transactional(propagation = Propagation.REQUIRED,rollbackFor = {Exception.class})
 	public List<HtmlPage> queryByDate(Date date) {
-		
-		return null;
+		return htmlPageMapper.queryByDate(date);
 	}
 	@Override
 	@Transactional(propagation = Propagation.REQUIRED,rollbackFor = {Exception.class})
 	public HtmlPage queryByHtmlAndHost(String htmlName,String hostName) {
-		return htmlPageMapper.queryByHtmlAndHost(htmlName, hostName);
+		if(Integer.valueOf(htmlName)>=0) {
+			return htmlPageMapper.queryByHtmlAndHost(Integer.valueOf(htmlName), hostName);
+		}
+		return null;
 	}
 
 	@Override
 	@Transactional(propagation = Propagation.REQUIRED,rollbackFor = {Exception.class})
 	public boolean isExisthtmlByName(String htmlName, String hostName) {
-		
-		return false;
+		return htmlPageMapper.isExisthtmlByName(htmlName, hostName);
+	}
+
+	@Override
+	public int updateContent(int htmlName, String hostName, String content) {
+		return htmlPageMapper.updateContent(htmlName, hostName, content);
 	}
 
 }

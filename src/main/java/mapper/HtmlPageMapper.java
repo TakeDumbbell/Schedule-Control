@@ -14,7 +14,8 @@ public interface HtmlPageMapper {
 	int addHtmlPage(HtmlPage htmlPage);
 	int deleteHtmlPage(@Param("htmlName")String htmlName,@Param("hostName")String hostName);
 	int updateHtmlPageByName(@Param("oldName")String oldName,@Param("newName")String newName,@Param("hostName")String hostName);
-	HtmlPage queryByHtmlAndHost(@Param("htmlName")String htmlName,@Param("hostName")String hostName);
+	int updateContent(@Param("htmlName")int htmlName,@Param("hostName")String hostName,@Param("content")String content);
+	HtmlPage queryByHtmlAndHost(@Param("htmlName")int htmlName,@Param("hostName")String hostName);
 	List<HtmlPage> queryAll();
 	List<HtmlPage> queryByHost(String hostName);
 	List<HtmlPage> queryByDate(Date createTime);

@@ -1,7 +1,6 @@
 package controller;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -49,13 +48,15 @@ public class CommodityController {
 	}
 	//查询
 	@RequestMapping("/query")
-	public String query(String title,String type,String typeId,Model model) {
+	public String query(String title,String type,String typeId,String checkedbox,Model model) {
 		List<Commodity> commodityList = null;
 		title="%"+title+"%";
 		type="%"+type+"%";
 		typeId="%"+typeId+"%";
+//		System.out.println(checkedbox);
 		commodityList=commodityService.queryCommodityByTypeTitleTypeId(title, type, typeId);
 		model.addAttribute("commodityList",commodityList);
+		model.addAttribute("checkedbox",checkedbox);
 		return "commodity/list";
 	}
 	//删除
@@ -74,7 +75,7 @@ public class CommodityController {
 	public String update(Commodity commodity,@RequestParam("imgFile")MultipartFile[] file,
 			@RequestParam("brandImgPath")MultipartFile brandFile,Model model) {
 		if(commodityService.updateCommodity(commodity,file, brandFile)>0) {
-			return "commodity/list";
+			return "main";
 		}
 		return "error";
 	}
@@ -85,34 +86,25 @@ public class CommodityController {
 		model.addAttribute("commodity",commodity);
 		return "commodity/updateForm";
 	}
-	
-	@RequestMapping("/checkboxname")
-	public String checkboxname(HttpServletRequest request,Model model) {
-		String[] checkbox=request.getParameterValues("category");
-		String content="";
-		for(int i=0;i<checkbox.length;i++) {
-			if(i>0)
-				content+=";";
-			content=content+checkbox[i];
-		}
-//		HtmlPage htmlPage=new HtmlPage("",content,"",new Date());
-//		htmlPage.setHostName("");
-		List<Commodity> commodityList = commodityService.queryAll();
-		model.addAttribute("commodityList",commodityList);
-		return "commodity/list";
-	}
 	@RequestMapping("/share")
 	public String shareCommodity(HttpServletRequest request,Model model) {
 		String htmlName=request.getParameter("p");
 		String hostName=request.getParameter("h");
-		HtmlPage htmlPage=htmlPageService.queryByHtmlAndHost(htmlName, hostName);
 		List<Commodity> commodityList = new ArrayList<Commodity>();
 		if(htmlName!=null&&!"".equals(htmlName)&&hostName!=null&&!"".equals(hostName)) {
-			String[] contents=htmlPage.getContent().split(";");
-			for(int i=0;i<contents.length;i++) {
-				Commodity commodity=commodityService.queryById(contents[i]);
-				if(commodity!=null)
-					commodityList.add(commodity);
+			HtmlPage htmlPage=htmlPageService.queryByHtmlAndHost(htmlName, hostName);
+			if(htmlPage!=null) {
+				System.out.println(htmlPage.getContent());
+				String[] contents=htmlPage.getContent().split(";");
+				if(contents.length==0&&htmlPage.getContent().length()>0) {
+					commodityList.add(commodityService.queryById(htmlPage.getContent()));
+				} else {
+					for(int i=0;i<contents.length;i++) {
+						Commodity commodity=commodityService.queryById(contents[i]);
+						if(commodity!=null)
+							commodityList.add(commodity);
+					}
+				}
 			}
 		}
 		model.addAttribute("commodityList",commodityList);

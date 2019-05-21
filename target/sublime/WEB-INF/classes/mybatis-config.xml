@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration PUBLIC "mybatis-3-config" "mybatis-3-config.dtd" >
+<configuration>
+	<typeAliases>
+		<typeAlias type="domain.Commodity" alias="Commodity"/>
+		<typeAlias type="domain.HtmlPage" alias="HtmlPage"/>
+	</typeAliases>
+</configuration>

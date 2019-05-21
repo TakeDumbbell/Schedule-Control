@@ -10,5 +10,9 @@ public class MainController {
 	public String main() {
 		return "main";
 	}
+	@RequestMapping("/contact")
+	public String contact() {
+		return "contact";
+	}
 
 }
